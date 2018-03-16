@@ -30,6 +30,12 @@ import (
 type Code int
 
 const (
+	CodeStdParseError     Code = -32700
+	CodeStdInvalidRequest Code = -32600
+	CodeStdMethodNotFound Code = -32601
+	CodeStdInvalidParams  Code = -32602
+	CodeStdInternalError  Code = -32603
+
 	CodeUnexpectedError Code = -32000
 	CodeUnauthorized    Code = -32001
 	CodeForbidden       Code = -32002
@@ -38,6 +44,12 @@ const (
 )
 
 var messages = map[Code]string{
+	CodeStdParseError:     "Parse errror",
+	CodeStdInvalidRequest: "Invalid Request",
+	CodeStdMethodNotFound: "Method not found",
+	CodeStdInvalidParams:  "Invalid params",
+	CodeStdInternalError:  "Internal error",
+
 	CodeUnexpectedError: "Unexpected error",
 	CodeUnauthorized:    "Unauthorized",
 	CodeForbidden:       "Forbidden",
