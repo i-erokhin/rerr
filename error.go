@@ -41,6 +41,7 @@ const (
 	CodeForbidden       Code = -32002
 	CodeDuplicateValue  Code = -32003
 	CodeBadCredentials  Code = -32004
+	CodeNotFound        Code = -32005
 )
 
 var messages = map[Code]string{
@@ -55,6 +56,7 @@ var messages = map[Code]string{
 	CodeForbidden:       "Forbidden",
 	CodeDuplicateValue:  "Duplicate value",
 	CodeBadCredentials:  "Bad credentials",
+	CodeNotFound:        "Not found",
 }
 
 type Error struct {
