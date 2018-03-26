@@ -1,8 +1,6 @@
 package rpc_error
 
-import (
-	"github.com/gorilla/rpc/v2/json2"
-)
+import "github.com/gorilla/rpc/v2/json2"
 
 // From: http://www.jsonrpc.org/specification#error_object
 //
@@ -29,40 +27,39 @@ import (
 type Code int
 
 const (
-	E_UNAUTHORISED    json2.ErrorCode = -32001
-	E_FORBIDDEN       json2.ErrorCode = -32002
-	E_DUPLICATE       json2.ErrorCode = -32003
-	E_BAD_CREDENTIALS json2.ErrorCode = -32004
-	E_NOT_FOUND       json2.ErrorCode = -32005
+	EParse      = json2.E_PARSE
+	EInvalidReq = json2.E_INVALID_REQ
+	ENoMethod   = json2.E_NO_METHOD
+	EBadParams  = json2.E_BAD_PARAMS
+	EInternal   = json2.E_INTERNAL
+	EServer     = json2.E_SERVER
+
+	EUnauthorised   json2.ErrorCode = -32001
+	EForbidden      json2.ErrorCode = -32002
+	EDuplicate      json2.ErrorCode = -32003
+	EBadCredentials json2.ErrorCode = -32004
+	ENotFound       json2.ErrorCode = -32005
 )
 
-var messages = map[json2.ErrorCode]string{
-	json2.E_PARSE:       "Parse error",
-	json2.E_INVALID_REQ: "Invalid Request",
-	json2.E_NO_METHOD:   "Method not found",
-	json2.E_BAD_PARAMS:  "Invalid params",
-	json2.E_INTERNAL:    "Internal error",
-	json2.E_SERVER:      "Server error",
+var Messages = map[json2.ErrorCode]string{
+	EParse:      "Parse error",
+	EInvalidReq: "Invalid Request",
+	ENoMethod:   "Method not found",
+	EBadParams:  "Invalid params",
+	EInternal:   "Internal error",
+	EServer:     "Server error",
 
-	E_UNAUTHORISED:    "Unauthorized",
-	E_FORBIDDEN:       "Forbidden",
-	E_DUPLICATE:       "Duplicate value",
-	E_BAD_CREDENTIALS: "Bad credentials",
-	E_NOT_FOUND:       "Not found",
+	EUnauthorised:   "Unauthorized",
+	EForbidden:      "Forbidden",
+	EDuplicate:      "Duplicate value",
+	EBadCredentials: "Bad credentials",
+	ENotFound:       "Not found",
 }
 
 func New(code json2.ErrorCode, data interface{}) *json2.Error {
 	return &json2.Error{
 		Code:    code,
-		Message: messages[code],
-		Data:    data,
-	}
-}
-
-func Unexpected(data interface{}) *json2.Error {
-	return &json2.Error{
-		Code:    json2.E_SERVER,
-		Message: messages[json2.E_SERVER],
+		Message: Messages[code],
 		Data:    data,
 	}
 }
