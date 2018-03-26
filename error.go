@@ -1,8 +1,7 @@
 package rpc_error
 
 import (
-	"fmt"
-	"encoding/json"
+	"github.com/gorilla/rpc/v2/json2"
 )
 
 // From: http://www.jsonrpc.org/specification#error_object
@@ -30,70 +29,40 @@ import (
 type Code int
 
 const (
-	CodeStdParseError     Code = -32700
-	CodeStdInvalidRequest Code = -32600
-	CodeStdMethodNotFound Code = -32601
-	CodeStdInvalidParams  Code = -32602
-	CodeStdInternalError  Code = -32603
-
-	CodeUnexpectedError Code = -32000
-	CodeUnauthorized    Code = -32001
-	CodeForbidden       Code = -32002
-	CodeDuplicateValue  Code = -32003
-	CodeBadCredentials  Code = -32004
-	CodeNotFound        Code = -32005
+	E_UNAUTHORISED    json2.ErrorCode = -32001
+	E_FORBIDDEN       json2.ErrorCode = -32002
+	E_DUPLICATE       json2.ErrorCode = -32003
+	E_BAD_CREDENTIALS json2.ErrorCode = -32004
+	E_NOT_FOUND       json2.ErrorCode = -32005
 )
 
-var messages = map[Code]string{
-	CodeStdParseError:     "Parse errror",
-	CodeStdInvalidRequest: "Invalid Request",
-	CodeStdMethodNotFound: "Method not found",
-	CodeStdInvalidParams:  "Invalid params",
-	CodeStdInternalError:  "Internal error",
+var messages = map[json2.ErrorCode]string{
+	json2.E_PARSE:       "Parse error",
+	json2.E_INVALID_REQ: "Invalid Request",
+	json2.E_NO_METHOD:   "Method not found",
+	json2.E_BAD_PARAMS:  "Invalid params",
+	json2.E_INTERNAL:    "Internal error",
+	json2.E_SERVER:      "Server error",
 
-	CodeUnexpectedError: "Unexpected error",
-	CodeUnauthorized:    "Unauthorized",
-	CodeForbidden:       "Forbidden",
-	CodeDuplicateValue:  "Duplicate value",
-	CodeBadCredentials:  "Bad credentials",
-	CodeNotFound:        "Not found",
+	E_UNAUTHORISED:    "Unauthorized",
+	E_FORBIDDEN:       "Forbidden",
+	E_DUPLICATE:       "Duplicate value",
+	E_BAD_CREDENTIALS: "Bad credentials",
+	E_NOT_FOUND:       "Not found",
 }
 
-type Error struct {
-	Code    Code        `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
-}
-
-func (e *Error) String() string {
-	var stringData string
-	var ok bool
-	if stringData, ok = e.Data.(string); !ok {
-		b, err := json.Marshal(e.Data)
-		if err != nil {
-			panic(err)
-		}
-		stringData = string(b)
-	}
-	return fmt.Sprintf("%d: %s (%s)", e.Code, e.Message, stringData)
-}
-
-func (e *Error) Error() string {
-	return e.String()
-}
-
-func New(code Code, data interface{}) *Error {
-	return &Error{
+func New(code json2.ErrorCode, data interface{}) *json2.Error {
+	return &json2.Error{
 		Code:    code,
 		Message: messages[code],
 		Data:    data,
 	}
 }
 
-func Unexpected(data interface{}) *Error {
-	return &Error{
-		Code:    CodeUnexpectedError,
-		Message: messages[CodeUnexpectedError],
+func Unexpected(data interface{}) *json2.Error {
+	return &json2.Error{
+		Code:    json2.E_SERVER,
+		Message: messages[json2.E_SERVER],
 		Data:    data,
 	}
 }
