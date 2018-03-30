@@ -1,5 +1,5 @@
-rpc_error
-=========
+rerr
+====
 
 Golang helper for Gorilla JSON RPC 2.0. Common errors with codes and messages.
 
