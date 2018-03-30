@@ -1,4 +1,4 @@
-package rpc_error
+package rerr
 
 import "github.com/gorilla/rpc/v2/json2"
 
